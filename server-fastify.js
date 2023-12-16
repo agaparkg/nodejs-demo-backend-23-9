@@ -133,9 +133,13 @@ fastify.patch("/users/:id", async (request, reply) => {
 });
 
 // Run the server!
-try {
-  await fastify.listen({ port });
-} catch (err) {
-  fastify.log.error(err);
-  process.exit(1);
-}
+const runServer = async () => {
+  try {
+    await fastify.listen({ port });
+  } catch (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
+};
+
+runServer();
