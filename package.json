@@ -2,7 +2,7 @@
   "name": "demo-23-9",
   "version": "1.0.0",
   "description": "This is my backend node project",
-  "main": "server.js",
+  "main": "server-fastify.js",
   "type": "module",
   "scripts": {
     "dev": "nodemon server.js",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "express": "^4.18.2",
+    "fastify": "^4.25.1",
     "uuid": "^9.0.1"
   }
 }

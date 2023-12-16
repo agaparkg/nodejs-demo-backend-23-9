@@ -14,6 +14,12 @@ const server = http.createServer((req, res) => {
   switch (method) {
     case "GET":
       return handleGetMethod(res);
+    case "POST":
+      return handlePostMethod(res);
+    case "PATCH":
+      return handlePatchMethod(req, res);
+    case "DELETE":
+      return handleDeleteMethod(req, res);
     default:
       throw new Error(`Not supported method: ${method}`);
   }
@@ -22,6 +28,9 @@ const server = http.createServer((req, res) => {
 function handleGetMethod(res) {
   res.end(JSON.stringify({ message: "Success" }));
 }
+function handlePostMethod(res) {}
+function handlePatchMethod(req, res) {}
+function handleDeleteMethod(req, res) {}
 
 server.listen(port, () => {
   console.log(`Server is listening on port ${port}`);

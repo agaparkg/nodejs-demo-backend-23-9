@@ -1,31 +1,32 @@
-import express from "express";
+// Import the framework and instantiate it
+import Fastify from "fastify";
 import { v4 as uuidv4 } from "uuid";
 import { readFile, writeFile } from "node:fs/promises";
 
-const server = express();
-
-const port = process.env.PORT || 8000;
-
-server.use(express.json());
-
-server.get("/", async (req, res) => {
-  res.status(200).json({ message: "Yay home path is working!" });
+const fastify = Fastify({
+  logger: true,
 });
 
-server.get("/users", async (req, res) => {
+// Declare a route
+fastify.get("/", async function handler(request, reply) {
+  return { message: "Yay! Home path is working." };
+});
+
+fastify.get("/users/", async (request, reply) => {
   try {
     // Read existing users from the file: https://nodejs.org/api/fs.html#fspromisesreadfilepath-options
     const data = await readFile("./data/users.json", { encoding: "utf8" });
     const users = JSON.parse(data);
-    res.json(users);
+
+    return users;
   } catch (error) {
-    res.json({ error: "Something went wrong!" });
+    return { error: "Something went wrong!" };
   }
 });
 
-server.get("/users/:id", async (req, res) => {
-  //   const {id} = req.params
-  const id = req.params.id;
+fastify.get("/users/:id", async (request, reply) => {
+  //   const {id} = request.params
+  const id = request.params.id;
 
   try {
     const data = await readFile("./data/users.json", { encoding: "utf8" });
@@ -36,14 +37,18 @@ server.get("/users/:id", async (req, res) => {
 
     // If the user exist in the array, send it back as a response.
     // If not, send an error as a response.
-    singleUser ? res.json(singleUser) : res.json({ error: "User not found" });
+    if (singleUser) {
+      return singleUser;
+    } else {
+      return { error: "User not found" };
+    }
   } catch (error) {
     res.json({ error: "Something went wrong!" });
   }
 });
 
-server.delete("/users/:id", async (req, res) => {
-  const userId = req.params.id;
+fastify.delete("/users/:id", async (request, reply) => {
+  const userId = request.params.id;
 
   try {
     // Read existing users from the file: https://nodejs.org/api/fs.html#fspromisesreadfilepath-options
@@ -60,17 +65,17 @@ server.delete("/users/:id", async (req, res) => {
       // Write the updated users back to the file. https://nodejs.org/api/fs.html#fspromiseswritefilefile-data-options
       await writeFile("./data/users.json", JSON.stringify(users));
 
-      res.status(200).json({ message: "User has been deleted successfully." });
+      return { message: "User has been deleted successfully." };
     } else {
-      res.status(404).json({ error: "User not found" });
+      return { error: "User not found" };
     }
   } catch (error) {
-    res.json({ error: "Something went wrong!" });
+    return { error: "Something went wrong!" };
   }
 });
 
-server.post("/users", async (req, res) => {
-  const newUser = req.body;
+fastify.post("/users", async (request, reply) => {
+  const newUser = request.body;
 
   //   Add id to the new item
   newUser.id = uuidv4();
@@ -89,16 +94,16 @@ server.post("/users", async (req, res) => {
     // Write the updated items back to the file
     await writeFile("./data/users.json", JSON.stringify(users));
 
-    res.status(200).json(newUser);
+    return newUser;
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    return { error: "Internal Server Error" };
   }
 });
 
 // Endpoint to update (patch) a user by ID
-server.patch("/users/:id", async (req, res) => {
-  const userID = req.params.id;
-  const updatedData = req.body;
+fastify.patch("/users/:id", async (request, reply) => {
+  const userID = request.params.id;
+  const updatedData = request.body;
 
   try {
     // Read existing users data from a file
@@ -116,15 +121,19 @@ server.patch("/users/:id", async (req, res) => {
 
       // Write the updated items back to the file. https://nodejs.org/api/fs.html#fspromiseswritefilefile-data-options
       await writeFile("./data/users.json", JSON.stringify(users));
-      res.status(200).json(users[index]);
+      return users[index];
     } else {
-      res.status(404).json({ error: "User not found" });
+      return { error: "User not found" };
     }
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    return { error: "Internal Server Error" };
   }
 });
 
-server.listen(port, () => {
-  console.log(`Server is listening on port ${port}`);
-});
+// Run the server!
+try {
+  await fastify.listen({ port: 8000 });
+} catch (err) {
+  fastify.log.error(err);
+  process.exit(1);
+}

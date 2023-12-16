@@ -1,7 +1,1 @@
-[
-  {
-    "id": "1",
-    "name": "Alex",
-    "age": "25"
-  }
-]
+[{"name":"Azamat","age":35,"id":"f63ccbf6-06f0-472d-9cd3-ba440409dafd"},{"name":"John","age":40,"id":"fa76a0ce-5f84-4d4a-8c30-184d4799a06b"},{"name":"Sylvia","age":33,"id":"9d14c4b5-0ec7-41b1-a6b9-0263fbcffe1f"},{"name":"Alex","age":30,"id":"79e563e3-eef5-4593-a837-9d3846fe7ea5"}]
