@@ -7,6 +7,8 @@ const fastify = Fastify({
   logger: true,
 });
 
+const port = process.env.PORT || 8000;
+
 // Declare a route
 fastify.get("/", async function handler(request, reply) {
   return { message: "Yay! Home path is working." };
@@ -132,7 +134,7 @@ fastify.patch("/users/:id", async (request, reply) => {
 
 // Run the server!
 try {
-  await fastify.listen({ port: 8000 });
+  await fastify.listen({ port });
 } catch (err) {
   fastify.log.error(err);
   process.exit(1);
