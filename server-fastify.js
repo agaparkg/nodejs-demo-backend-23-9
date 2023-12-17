@@ -14,7 +14,7 @@ fastify.get("/", async function handler(request, reply) {
   return { message: "Yay! Home path is working." };
 });
 
-fastify.get("/users/", async (request, reply) => {
+fastify.get("/users", async (request, reply) => {
   try {
     // Read existing users from the file: https://nodejs.org/api/fs.html#fspromisesreadfilepath-options
     const data = await readFile("./data/users.json", { encoding: "utf8" });
@@ -135,7 +135,7 @@ fastify.patch("/users/:id", async (request, reply) => {
 // Run the server!
 const runServer = async () => {
   try {
-    await fastify.listen({ port });
+    fastify.listen({ port });
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
