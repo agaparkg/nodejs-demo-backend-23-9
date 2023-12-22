@@ -16,7 +16,10 @@ server.get("/users", async (req, res) => {
     // Read existing users from the file: https://nodejs.org/api/fs.html#fspromisesreadfilepath-options
     const data = await readFile("./data/users.json", { encoding: "utf8" });
     const users = JSON.parse(data);
-    res.json(users);
+    res.json({
+      total_users: users.length,
+      users,
+    });
   } catch (error) {
     res.json({ error: "Something went wrong!" });
   }
