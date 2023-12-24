@@ -31,7 +31,7 @@
 ```
 
 Navigate to `http://localhost:8000` to see the output  
-![root route](./home_path.png)
+![root route](/images/home_path.png)
 
 - Additional routes
 
@@ -43,6 +43,12 @@ Navigate to `http://localhost:8000` to see the output
   PATCH - /users/:id (req.params.id & provide the data in the body)
   ```
 
-- API Document endpoints
+- This project has been deployed to [render.com](https://dashboard.render.com/). The rendered output looks like this:  
+  <https://two3-9-nodejs-backend.onrender.com/>
 
-  In progress... Stay tuned!
+![deployed root route](/images/deployed_home.png)
+
+![deployed root route](/images/users_path.png)
+
+- Deploy Hooks for [render.com](https://dashboard.render.com/) (It enables you to trigger an on-demand deploy of your Render service with a single HTTP request)
+  <https://docs.render.com/deploy-hooks>
